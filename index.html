@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Сайт-визитка</title>
+<style>
+  body, html {
+    margin: 0; padding: 0; height: 100%; overflow: hidden;
+    background: url('i (13).jpg') no-repeat center center fixed;
+    background-size: cover;
+    font-family: Arial, sans-serif;
+  }
+  .card {
+      background-color: white;
+      padding: 30px 40px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      border-radius: 10px;
+      max-width: 350px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      height: 500px;
+    }
+    .photo {
+      width: 240px;
+      height: 340px;
+      object-fit: cover;
+      margin-bottom: 20px;
+      border: 3px solid #3498db;
+    }
+    .card h1 {
+      margin: 0 0 10px 0;
+      font-size: 28px;
+      color: #333;
+    }
+    .card p {
+      margin: 5px 0;
+      color: #666;
+      font-size: 16px;
+    }
+    .contacts {
+      margin-top: 20px;
+      font-size: 14px;
+      color: #444;
+    }
+    .contacts a {
+      color: #3498db;
+      text-decoration: none;
+      font-weight: bold;
+      margin: 0 5px;
+    }
+    .contacts a:hover {
+      text-decoration: underline;
+    }
+    .social-icons {
+      margin-top: 15px;
+    }
+    .social-icons a {
+      margin: 0 10px;
+      color: #3498db;
+      font-size: 28px;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    .social-icons a:hover {
+      color: #1d6fa5;
+    }
+  .buttons {
+    position: fixed; top: 20px; right: 20px;
+    display: flex; gap: 10px;
+  }
+  .buttons a {
+    display: inline-block;
+    background: rgba(255,255,255,0.8);
+    padding: 10px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    color: #000;
+    font-weight: bold;
+    transition: background 0.3s;
+  }
+  .buttons a:hover {
+    background: rgba(255,255,255,1);
+  }
+  #movingImage {
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -150px; /* старт снизу под экраном */
+    width: 150px;
+    cursor: pointer;
+  }
+  .appearedImage {
+    position: fixed;
+    width: 150px;
+    pointer-events: none; /* чтобы не мешать кликам */
+    user-select: none;
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+    <img src="photo_2025-05-05_18-11-31.jpg" alt="Рамиля Байчурина" class="photo" />
+    <h1>Рамиля Байчурина</h1>
+    <p>QA-Engineer</p>
+    <p>Поймаю ваши баги</p>
+
+   <div class="contacts">
+      <a href="mailto:ramilyaprizm@gmail.com">ramilyaprizm@gmail.com</a> |
+      <a href="tel:+79604733396">+7 960 47 333 96</a>
+    </div>
+    
+
+<div class="buttons">
+  <a href="https://t.me/ramilushka26" target="_blank" rel="noopener">Telegram</a>
+  <a href="https://wa.me/+79604733396" target="_blank" rel="noopener">WhatsApp</a>
+</div>
+
+<img id="movingImage" src="6-65078_bug-clipart-beetle-clipart.png" alt="Двигающаяся картинка" />
+
+<script>
+  const movingImg = document.getElementById('movingImage');
+  let posY = -150; // начальная позиция (отрицательная, снизу за экраном)
+  let speed = 3; // скорость движения вверх
+  let moving = true;
+
+  function move() {
+    if (moving) {
+      posY += speed;
+      if (posY > window.innerHeight + 150) {
+        // если картинка поднялась выше верхнего края + запас — сбросить вниз
+        posY = -150;
+      }
+      movingImg.style.bottom = posY + 'px';
+    }
+    requestAnimationFrame(move);
+  }
+  requestAnimationFrame(move);
+
+  movingImg.addEventListener('click', (e) => {
+    moving = !moving; // переключаем движение (остановка/старт)
+    if (!moving) {
+      // картинка остановилась — показываем другую картинку в месте клика
+      // рассчитываем координаты для появления картинки
+      const x = e.clientX;
+      const y = e.clientY;
+
+      const newImg = document.createElement('img');
+      newImg.src = 'BUG Buster.png'; // замените на ваш URL другой картинки
+      newImg.className = 'appearedImage';
+      newImg.style.left = (x - 50) + 'px'; // центрируем по ширине (50 = полширины)
+      newImg.style.top = (y - 50) + 'px'; // центрируем по высоте
+
+      document.body.appendChild(newImg);
+
+      // Можно через некоторое время убрать новую картинку, например через 3 сек:
+      setTimeout(() => {
+        newImg.remove();
+      }, 3000);
+    }
+  });
+</script>
+
+</body>
+</html>
